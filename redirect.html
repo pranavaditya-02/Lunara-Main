@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="3;url=https://www.lunara.tech">
+<title>Redirecting...</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 100px;
+  }
+  #timer {
+    font-size: 24px;
+  }
+</style>
+</head>
+<body>
+<p id="timer">Redirecting in 3 seconds...</p>
+<p>Sorry for the inconvenience, the domain has been changed.</p>
+<script>
+  // Countdown timer
+  var countdown = 3;
+  var timer = document.getElementById('timer');
+  setInterval(function() {
+    countdown--;
+    if (countdown <= 0) {
+      clearInterval();
+    }
+    timer.textContent = 'Redirecting in ' + countdown + ' seconds...';
+  }, 1000);
+</script>
+</body>
+</html>
+ 
