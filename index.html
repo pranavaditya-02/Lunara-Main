@@ -798,6 +798,59 @@
                                     0% { transform: rotate(0deg); }
                                     100% { transform: rotate(-360deg); }
                                 }
+                                /* Mobile responsive styles */
+@media only screen and (max-width: 768px) {
+    h3[style*="font-size: 18px"] {
+        font-size: 15px !important;
+    }
+    
+    p[style*="font-size: 14px"] {
+        font-size: 12px !important;
+    }
+    
+    span[style*="font-size: 26px"] {
+        font-size: 22px !important;
+    }
+    
+    span[style*="font-size: 13px"] {
+        font-size: 11px !important;
+        letter-spacing: 1px !important;
+    }
+    
+    div[style*="padding: 20px"] {
+        padding: 15px !important;
+    }
+    
+    div[style*="width: 56px"][style*="height: 56px"] {
+        width: 48px !important;
+        height: 48px !important;
+    }
+    
+    div[style*="left: -28px"] {
+        left: -24px !important;
+    }
+    
+    div[style*="right: -28px"] {
+        right: -24px !important;
+    }
+    
+    /* Adjust satellite/orbiting elements */
+    div[style*="transform-origin: 0 28px"] {
+        transform-origin: 0 24px !important;
+    }
+    
+    /* Adjust Saturn rings */
+    div[style*="width: 70px"][style*="height: 20px"] {
+        width: 60px !important;
+        height: 16px !important;
+    }
+    
+    div[style*="width: 76px"][style*="height: 12px"] {
+        width: 66px !important;
+        height: 10px !important;
+    }
+}
+                                
                             </style>
                           
 
