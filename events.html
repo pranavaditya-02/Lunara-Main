@@ -252,55 +252,154 @@
                                                     future.</p>
                                             </div>
                                         </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+    // Get all links in the event lists
+    const eventLinks = document.querySelectorAll('.all-events-list a, a li.card');
+    
+    eventLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Prevent the default action
+            event.preventDefault();
+            
+            // Get the href attribute
+            let href;
+            if (this.tagName === 'A') {
+                href = this.getAttribute('href');
+            } else if (this.parentElement && this.parentElement.tagName === 'A') {
+                href = this.parentElement.getAttribute('href');
+            }
+            
+            if (!href) return;
+            
+            // Check if href contains a hash
+            if (href.includes('#')) {
+                const [targetPage, targetId] = href.split('#');
+                
+                // Check if we're already on the events page
+                const currentPath = window.location.pathname;
+                const isEventsPage = currentPath.endsWith('events.html') || 
+                                    currentPath.endsWith('/events.html');
+                
+                if (isEventsPage) {
+                    // If already on events page, scroll to the target section
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        // Update URL before scrolling
+                        window.history.pushState(null, '', `#${targetId}`);
+                        
+                        // Get the header height (adjust this value based on your site)
+                        const headerHeight = 80; // Example: adjust based on your header height
+                        
+                        // Get element's position
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                        
+                        // Use requestAnimationFrame for smoother scrolling
+                        smoothScrollTo(offsetPosition, 500); // 500ms duration
+                    } else {
+                        console.error(`Element with ID ${targetId} not found`);
+                        // Navigate to the full URL as fallback
+                        window.location.href = href;
+                    }
+                } else {
+                    // If not on events page, navigate to the full URL
+                    window.location.href = href;
+                }
+            } else {
+                // If no hash in URL, just navigate normally
+                window.location.href = href;
+            }
+        });
+    });
+    
+    // Custom smooth scroll function using requestAnimationFrame
+    function smoothScrollTo(targetPosition, duration) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+        
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const ease = easeInOutCubic(progress);
+            
+            window.scrollTo(0, startPosition + distance * ease);
+            
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+        
+        // Easing function for smoother animation
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        requestAnimationFrame(animation);
+    }
+    
+    // Handle the case where the page loads with a hash in the URL
+    if (window.location.hash && window.location.pathname.includes('events.html')) {
+        // Use setTimeout to ensure the page has fully loaded
+        setTimeout(() => {
+            const targetId = window.location.hash.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                const headerHeight = 80; // Adjust based on your header height
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                
+                smoothScrollTo(offsetPosition, 500);
+            }
+        }, 300);
+    }
+});
+                                        </script>
+                                        
                                         <!-- Technical -->
                                         <div>
                                             <!-- Boxes -->
                                             <div>
                                                 <div class="">
                                                     <ul class="all-events-list">
-                                                        <a href="./events.html#paper-presentation">
-                                                            <li class="card">
-                                                                <div class="eventimg"><img src="assets/event new/CELESTIDRAFT.webp"
-                                                                        alt="img" draggable="false"></div>
+                                                        <li class="card">
+                                                            <a href="./events.html#paper-presentation">
+                                                                <div class="eventimg"><img src="assets/event new/CELESTIDRAFT.webp" alt="img" draggable="false"></div>
                                                                 <h2>CELESTIDRAFT</h2>
                                                                 <p>Paper Presentation</p>
-                                                            </li>
-                                                        </a>
-                                                        <a href="./events.html#project-expo">
-
-                                                            <li class="card">
-                                                                <div class="eventimg"><img
-                                                                        src="assets/event new/INNOSCAPE.webp"
-                                                                        alt="img" draggable="false"></div>
+                                                            </a>
+                                                        </li>
+                                                        <li class="card">
+                                                            <a href="./events.html#project-expo">
+                                                                <div class="eventimg"><img src="assets/event new/INNOSCAPE.webp" alt="img" draggable="false"></div>
                                                                 <h2>INNOSCAPE</h2>
                                                                 <p>Product Expo</p>
-                                                            </li>
-                                                        </a>
-                                                        
+                                                            </a>
+                                                        </li>
                                                     </ul>
+                                                    
                                                     <ul class="all-events-list">
-                                                        <a href="./events.html#problem-solving">
-                                                            <li class="card">
-                                                                <div class="eventimg"><img
-                                                                        src="assets/event new/SELENE TECH.webp" alt="img"
-                                                                        draggable="false"></div>
+                                                        <li class="card">
+                                                            <a href="./events.html#problem-solving">
+                                                                <div class="eventimg"><img src="assets/event new/SELENE TECH.webp" alt="img" draggable="false"></div>
                                                                 <h2>SELENE TECH</h2>
                                                                 <p>Coding Contest</p>
-                                                            </li>
-                                                        </a>
-                                                        <a href="./events.html#workshop">
-                                                            <li class="card">
-                                                                <div class="eventimg"><img
-                                                                        src="assets/event new/STARGAGE STORIES.webp" alt="img"
-                                                                        draggable="false"></div>
+                                                            </a>
+                                                        </li>
+                                                        <li class="card">
+                                                            <a href="./events.html#workshop">
+                                                                <div class="eventimg"><img src="assets/event new/STARGAGE STORIES.webp" alt="img" draggable="false"></div>
                                                                 <h2>STARGAZE STORIES</h2>
                                                                 <p>Workshop</p>
-                                                            </li>
-                                                        </a>
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 
