@@ -598,25 +598,50 @@
                                     <!-- Event 1 -->
                                     <div style="position: relative; margin-bottom: 60px; animation: fadeIn 0.7s ease-out forwards;">
                                         <div style="position: relative; margin-left: 50%; padding-left: 40px;">
-                                            <!-- Enhanced Date Circle 1 - Now on left side -->
-                                            <div style="position: absolute; left: -60px; top: 0; width: 56px; height: 56px; border-radius: 50%; background: conic-gradient(from 45deg, #b53cff, #7678ed, #b53cff); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; transform: translateX(0%); box-shadow: 0 0 15px rgba(146, 87, 255, 0.6), 0 0 30px rgba(146, 87, 255, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.3); z-index: 2; animation: rotateConic 10s linear infinite, pulse 4s infinite alternate;">
+                                            <!-- Enhanced Date Circle with constant glow -->
+                                            <div style="position: absolute; left: -60px; top: 0; width: 56px; height: 56px; border-radius: 50%; 
+                                                background: conic-gradient(from 45deg, #b53cff, #7678ed, #b53cff); 
+                                                display: flex; flex-direction: column; justify-content: center; align-items: center; 
+                                                color: white; transform: translateX(0%); 
+                                                box-shadow: 0 0 15px rgba(146, 87, 255, 0.8), 0 0 30px rgba(146, 87, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.4); 
+                                                z-index: 2; animation: rotateConic 10s linear infinite;">
+                                                
                                                 <!-- Orbiting moon -->
-                                                <div style="position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #d4c4ff; top: 0; left: 50%; transform-origin: 0 28px; animation: orbit 10s linear infinite; box-shadow: 0 0 8px #d4c4ff, inset 0 0 4px rgba(0,0,0,0.3);"></div>
+                                                <div style="position: absolute; width: 12px; height: 12px; border-radius: 50%; 
+                                                    background: #d4c4ff; top: 0; left: 50%; transform-origin: 0 28px; 
+                                                    animation: orbit 10s linear infinite; 
+                                                    box-shadow: 0 0 8px #d4c4ff, inset 0 0 4px rgba(0,0,0,0.3);">
+                                                </div>
                                                 
-                                                <!-- Circular border with glow -->
-                                                <div style="position: absolute; width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); animation: borderPulse 3s infinite alternate;"></div>
+                                                <!-- Circular border with constant glow -->
+                                                <div style="position: absolute; width: 52px; height: 52px; border-radius: 50%; 
+                                                    border: 2px solid rgba(255,255,255,0.7);
+                                                    box-shadow: 0 0 12px rgba(255,255,255,0.6);">
+                                                </div>
                                                 
-                                                <!-- Day with enhanced text effect -->
-                                                <span style="font-size: 26px; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 0.9); font-family: 'Arial', sans-serif; letter-spacing: 0.5px; animation: textPulse 2s infinite alternate;">28</span>
+                                                <!-- Day with constant glow -->
+                                                <span style="font-size: 26px; font-weight: 700; 
+                                                    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 0.8); 
+                                                    font-family: 'Arial', sans-serif; letter-spacing: 0.5px;">28</span>
                                                 
-                                                <!-- Month with enhanced styling -->
-                                                <span style="font-size: 13px; font-weight: 600; letter-spacing: 2px; background: linear-gradient(to right, #ffffff, #d4c4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textFloat 3s ease-in-out infinite; margin-top: 2px;">FEB</span>
+                                                <!-- Month with enhanced styling and glow -->
+                                                <span style="font-size: 13px; font-weight: 600; letter-spacing: 2px; 
+                                                    background: linear-gradient(to right, #ffffff, #d4c4ff); 
+                                                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                                                    text-shadow: 0 0 10px rgba(212, 196, 255, 0.8);
+                                                    margin-top: 2px;">FEB</span>
                                             </div>
                                             
                                             <!-- Content card - stays on right side -->
-                                            <div style="background: rgba(23, 38, 94, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(99, 123, 255, 0.4); border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(34, 52, 139, 0.5), 0 0 15px rgba(99, 123, 255, 0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; transform: perspective(1000px) rotateY(-3deg);">
-                                                <h3 style="margin: 0 0 10px; font-size: 18px; color: #a3c4ff; font-weight: 700; text-shadow: 0 0 10px rgba(163, 196, 255, 0.6);">REGISTRATION STARTS</h3>
-                                                <p style="margin: 0; font-size: 14px; color: #d9e3ff; line-height: 1.5; text-shadow: 0 0 2px rgba(217, 227, 255, 0.2);">Secure your spot for our lunara'25! Registration now open—don't miss this interstellar journey.</p>
+                                            <div style="background: rgba(23, 38, 94, 0.8); backdrop-filter: blur(10px); 
+                                                border: 1px solid rgba(99, 123, 255, 0.4); border-radius: 12px; padding: 20px; 
+                                                box-shadow: 0 10px 25px rgba(34, 52, 139, 0.5), 0 0 15px rgba(99, 123, 255, 0.2); 
+                                                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; 
+                                                transform: perspective(1000px) rotateY(-3deg);">
+                                                <h3 style="margin: 0 0 10px; font-size: 18px; color: #a3c4ff; font-weight: 700; 
+                                                    text-shadow: 0 0 10px rgba(163, 196, 255, 0.6);">REGISTRATION STARTS</h3>
+                                                <p style="margin: 0; font-size: 14px; color: #d9e3ff; line-height: 1.5; 
+                                                    text-shadow: 0 0 2px rgba(217, 227, 255, 0.2);">Secure your spot for our lunara'25! Registration now open—don't miss this interstellar journey.</p>
                                             </div>
                                         </div>
                                     </div>
