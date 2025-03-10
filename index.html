@@ -1299,10 +1299,11 @@
                                     </svg>
                                     <span>
                                         <b>Mail Id: </b>
-                                        <a href="mailto:bitlunara@gmail.com" class="contact-link">
+                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bitlunara@gmail.com" class="contact-link">
                                             bitlunara@gmail.com
                                         </a>
                                     </span>
+                                    
                                 </li>
                                 <li class="contact-item">
                                     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="contact-icon"
@@ -1561,29 +1562,37 @@ body {
 
 
        <!-- Your existing footer with the developer modal functionality -->
-<footer>
-    <div class="footer">
-        <div class="row" style="display: flex;width: 200px;justify-content: space-between;">
-            <a href="mailto:bitlunara@gmail.com"><i class="fa-regular fa-envelope"></i></a>
-            <a href="https://www.instagram.com/lunara2k25?igsh=MTBvMjY4cHp2M3p1bw=="><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://wa.me/message/TILZEJ6EYJD2F1"><i class="fa-brands fa-whatsapp"></i></a>
+       <footer>
+        <div class="footer">
+            <div class="row" style="display: flex;width: 200px;justify-content: space-between; margin-bottom: 20px;">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bitlunara@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+                <a href="https://www.instagram.com/lunara2k25?igsh=MTBvMjY4cHp2M3p1bw=="><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/message/TILZEJ6EYJD2F1"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+            
+            <div class="row navigation-links" style="font-weight: bolder;font-size: 14.5px; max-width: 100vw !important;">
+                <ul style="margin-left: 10px;">
+                    <li><a href="./events.html">Home</a></li>
+                    <li><a href="./index.html#about">About</a></li>
+                    <li><a href="./index.html#event_details">Event Details</a></li>
+                    <li><a href="./index.html#contactlist">Contact Us</a></li>
+                    <li><a href="./events.html#all-events">Register</a></li>
+                </ul>
+            </div>
+            
+            <div class="row" style="font-size: 15px;text-align:center;">
+                Created with ❤️ <a href="#" id="lunaraTeamLink"><b style="font-weight: bold;">LUNARA WEB DEV TEAM</b></a>
+            </div>
         </div>
-        
-        <div class="row" style="font-weight: bolder;font-size: 14.5px; max-width: 100vw !important;">
-            <ul style="margin-left: 10px;">
-                <li><a href="./events.html">Home</a></li>
-                <li><a href="./index.html#about">About</a></li>
-                <li><a href="./index.html#event_details">Event Details</a></li>
-                <li><a href="./index.html#contactlist">Contact Us</a></li>
-                <li><a href="./events.html#all-events">Register</a></li>
-            </ul>
-        </div>
-        
-        <div class="row" style="font-size: 15px;text-align:center;">
-            Created with ❤️ <a href="#" id="lunaraTeamLink"><b style="font-weight: bold;">LUNARA WEB DEV TEAM</b></a>
-        </div>
-    </div>
-</footer>
+    </footer>
+    
+    <style>
+        @media screen and (max-width: 768px) {
+            .navigation-links {
+                display: none;
+            }
+        }
+    </style>
 
 <!-- Developer Modal Overlay -->
 <div class="dev-modal-overlay" id="devModalOverlay">
@@ -1952,6 +1961,17 @@ body {
             transform: translateX(300px) translateY(300px) rotate(45deg);
         }
     }
+    @media screen and (max-width: 768px) {
+  .developers-container {
+    padding-bottom: 80px; /* Adds extra padding at the bottom on mobile */
+  }
+  
+  /* You might also want to adjust the overall modal height for better mobile experience */
+  .dev-modal {
+    height: 70vh; /* Slightly taller on mobile for better scrolling */
+  }
+}
+    
 </style>
 
 <script>
