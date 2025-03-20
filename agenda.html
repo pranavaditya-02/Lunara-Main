@@ -2,646 +2,713 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lunara'25 - Event Schedule</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;700&display=swap");
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/event.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Slabo+27px|Yesteryear"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+    <link
+      href="./css/podcastxtemplate.webflow.05c75d856.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Exo 2", sans-serif;
-        background-color: #0a0e17;
-        color: #e1e6f0;
-        overflow-x: hidden;
-        background-image: radial-gradient(
-            circle at 20% 30%,
-            rgba(67, 97, 238, 0.15) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            circle at 80% 70%,
-            rgba(111, 63, 219, 0.1) 0%,
-            transparent 50%
-          );
-      }
-
-      .stars {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-      }
-
-      .star {
-        position: absolute;
-        background-color: #ffffff;
-        border-radius: 50%;
-        animation: twinkle 5s infinite ease-in-out;
-      }
-
-      @keyframes twinkle {
-        0% {
-          opacity: 0.2;
-        }
-        50% {
-          opacity: 0.8;
-        }
-        100% {
-          opacity: 0.2;
-        }
-      }
-
-      header {
-        text-align: center;
-        padding: 3rem 0 2rem;
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(
-          180deg,
-          rgba(10, 14, 23, 0.9) 0%,
-          rgba(10, 14, 23, 0.7) 100%
-        );
-        backdrop-filter: blur(5px);
-        border-bottom: 1px solid rgba(67, 97, 238, 0.2);
-      }
-
-      h1 {
-        font-family: "Orbitron", sans-serif;
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        background: linear-gradient(90deg, #4361ee, #7209b7, #f72585);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-
-      @keyframes glow {
-        0% {
-          text-shadow: 0 0 10px rgba(67, 97, 238, 0.6);
-        }
-        100% {
-          text-shadow: 0 0 20px rgba(247, 37, 133, 0.8),
-            0 0 30px rgba(114, 9, 183, 0.4);
-        }
-      }
-
-      .subtitle {
-        font-size: 1.5rem;
-        font-weight: 300;
-        margin-bottom: 1rem;
-        color: #a0aec0;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-      }
-
-      .schedule-content {
-        display: flex;
-        flex-direction: column;
-        padding: 2rem 0;
-      }
-
-      .timeline {
-        position: relative;
-      }
-
-      .timeline:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 150px;
-        height: 100%;
-        width: 3px;
-        background: linear-gradient(to bottom, #4361ee, #7209b7, #f72585);
-        border-radius: 5px;
-        z-index: 1;
-      }
-
-      .event-row {
-        display: flex;
-        margin-bottom: 1.5rem;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.6s ease;
-      }
-
-      .event-row.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .event-time-box {
-        width: 150px;
-        flex-shrink: 0;
-        position: relative;
-        padding-right: 30px;
-      }
-
-      .time-box {
-        font-family: "Orbitron", sans-serif;
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(67, 97, 238, 0.3);
-        border-radius: 6px;
-        padding: 10px;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #fff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(5px);
-        margin-top: 0.5rem;
-        transition: all 0.3s ease;
-      }
-
-      .time-box:hover {
-        border-color: rgba(67, 97, 238, 0.8);
-        box-shadow: 0 0 15px rgba(67, 97, 238, 0.4);
-      }
-
-      .time-marker {
-        position: absolute;
-        right: -9px;
-        top: 21px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #4361ee;
-        box-shadow: 0 0 10px #4361ee;
-        z-index: 2;
-      }
-
-      .event-cards {
-        flex: 1;
-        padding-left: 2rem;
-      }
-
-      .event-card {
-        background: rgba(30, 41, 59, 0.7);
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        position: relative;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(67, 97, 238, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      .event-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        border-color: rgba(67, 97, 238, 0.5);
-      }
-
-      .event-card:last-child {
-        margin-bottom: 0;
-      }
-
-      .event-badge {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 5px;
-        border-radius: 10px 0 0 10px;
-      }
-
-      .event-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.75rem;
-      }
-
-      .event-name {
-        font-family: "Orbitron", sans-serif;
-        font-size: 1.3rem;
-        color: #ffffff;
-        margin: 0;
-      }
-
-      .event-time-label {
-        font-family: "Orbitron", sans-serif;
-        font-size: 0.8rem;
-        color: #a0aec0;
-        padding: 0.2rem 0.5rem;
-        background: rgba(30, 41, 59, 0.5);
-        border-radius: 4px;
-        border: 1px solid rgba(67, 97, 238, 0.2);
-      }
-
-      .event-description {
-        color: #a0aec0;
-        font-size: 0.95rem;
-        line-height: 1.5;
-      }
-
-      .parallel-events {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-      }
-
-      /* Event type specific colors */
-      .inauguration .event-badge {
-        background: #4cc9f0;
-      }
-      .paper .event-badge {
-        background: #4361ee;
-      }
-      .product .event-badge {
-        background: #7209b7;
-      }
-      .break .event-badge,
-      .lunch .event-badge {
-        background: #f72585;
-      }
-      .workshop .event-badge,
-      .coding .event-badge {
-        background: #560bad;
-      }
-      .ipl .event-badge {
-        background: #4cc9f0;
-      }
-      .quiz .event-badge,
-      .photography .event-badge {
-        background: #fb8500;
-      }
-      .techtalk .event-badge {
-        background: #ffbe0b;
-      }
-      .validation .event-badge {
-        background: #4361ee;
-      }
-
-      .inauguration .time-marker {
-        background: #4cc9f0;
-        box-shadow: 0 0 10px #4cc9f0;
-      }
-      .paper .time-marker {
-        background: #4361ee;
-        box-shadow: 0 0 10px #4361ee;
-      }
-      .product .time-marker {
-        background: #7209b7;
-        box-shadow: 0 0 10px #7209b7;
-      }
-      .break .time-marker,
-      .lunch .time-marker {
-        background: #f72585;
-        box-shadow: 0 0 10px #f72585;
-      }
-      .workshop .time-marker,
-      .coding .time-marker {
-        background: #560bad;
-        box-shadow: 0 0 10px #560bad;
-      }
-      .ipl .time-marker {
-        background: #4cc9f0;
-        box-shadow: 0 0 10px #4cc9f0;
-      }
-      .quiz .time-marker,
-      .photography .time-marker {
-        background: #fb8500;
-        box-shadow: 0 0 10px #fb8500;
-      }
-      .techtalk .time-marker {
-        background: #ffbe0b;
-        box-shadow: 0 0 10px #ffbe0b;
-      }
-      .validation .time-marker {
-        background: #4361ee;
-        box-shadow: 0 0 10px #4361ee;
-      }
-
-      footer {
-        text-align: center;
-        padding: 3rem 0;
-        color: #64748b;
-        font-size: 0.9rem;
-        border-top: 1px solid rgba(67, 97, 238, 0.2);
-        background: rgba(10, 14, 23, 0.8);
-      }
-
-      .back-button {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        background: rgba(30, 41, 59, 0.7);
-        color: #e1e6f0;
-        border: 1px solid #334155;
-        border-radius: 6px;
-        text-decoration: none;
-        font-family: "Orbitron", sans-serif;
-        font-size: 0.95rem;
-        margin-top: 2rem;
-        transition: all 0.3s ease;
-      }
-
-      .back-button:hover {
-        background: rgba(67, 97, 238, 0.3);
-        border-color: #4361ee;
-        box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
-        transform: translateY(-3px);
-      }
-
-      .back-button:before {
-        content: "←";
-        margin-right: 0.5rem;
-      }
-
-      .logo {
-        font-family: "Orbitron", sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-top: 1rem;
-        background: linear-gradient(90deg, #4361ee, #7209b7, #f72585);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-
-      @media (max-width: 768px) {
-        .timeline:before {
-          left: 100px;
-        }
-
-        .event-time-box {
-          width: 100px;
-          padding-right: 20px;
-        }
-
-        .time-box {
-          font-size: 0.8rem;
-          padding: 8px 5px;
-        }
-
-        .event-cards {
-          padding-left: 1.5rem;
-        }
-
-        .event-row {
-          margin-bottom: 1rem;
-        }
-
-        .event-card {
-          padding: 1.2rem;
-        }
-
-        .event-name {
-          font-size: 1.1rem;
-        }
-
-        .parallel-events {
-          grid-template-columns: 1fr;
-        }
-
-        /* FIXED: Remove the duplicate time display in mobile view */
-        /* Instead of showing time twice, just use the original time label */
-        /* We're removing this block that was causing the duplication */
-        /*
-            .parallel-events .event-card::before {
-                content: attr(data-time);
-                display: block;
-                font-family: 'Orbitron', sans-serif;
-                font-size: 0.7rem;
-                color: #a0aec0;
-                margin-bottom: 0.5rem;
-            }
-            */
-      }
-
-      @media (max-width: 480px) {
-        .timeline:before {
-          left: 85px;
-        }
-
-        .event-time-box {
-          width: 85px;
-          padding-right: 15px;
-        }
-
-        .time-box {
-          font-size: 0.7rem;
-          padding: 6px 3px;
-        }
-
-        .time-marker {
-          right: -7px;
-          width: 14px;
-          height: 14px;
-        }
-
-        .event-cards {
-          padding-left: 1rem;
-        }
-
-        .event-header {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.5rem;
-        }
-
-        .subtitle {
-          font-size: 1.2rem;
-        }
-
-        .logo {
-          font-size: 2rem;
-        }
-
-        .event-card {
-          padding: 1rem;
-        }
-      }
-    </style>
+    <!--GOOGLE FONTS-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <script defer="" src="./js/script.js.download"></script>
+    <title>EVENT | LUNARA'25</title>
   </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #e1e6f0;
+      font-family: "Exo 2", sans-serif;
+      line-height: 1.6;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background-color: #ffffff;
+      border-radius: 50%;
+      animation: twinkle 5s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0% {
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0.2;
+      }
+    }
+
+    h1 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #4361ee, #7209b7, #f72585);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 10px rgba(67, 97, 238, 0.6);
+      }
+      100% {
+        text-shadow: 0 0 20px rgba(247, 37, 133, 0.8),
+          0 0 30px rgba(114, 9, 183, 0.4);
+      }
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      color: #a0aec0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .schedule-content {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 0;
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 150px;
+      height: 100%;
+      width: 3px;
+      background: linear-gradient(to bottom, #4361ee, #7209b7, #f72585);
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .event-row {
+      display: flex;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .event-row.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .event-time-box {
+      width: 150px;
+      flex-shrink: 0;
+      position: relative;
+      padding-right: 30px;
+    }
+
+    .time-box {
+      font-family: "Orbitron", sans-serif;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(67, 97, 238, 0.3);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .time-box:hover {
+      border-color: rgba(67, 97, 238, 0.8);
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.4);
+    }
+
+    .time-marker {
+      position: absolute;
+      right: -9px;
+      top: 21px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #4361ee;
+      box-shadow: 0 0 10px #4361ee;
+      z-index: 2;
+    }
+
+    .event-cards {
+      flex: 1;
+      padding-left: 2rem;
+    }
+
+    .event-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(67, 97, 238, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      border-color: rgba(67, 97, 238, 0.5);
+    }
+
+    .event-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .event-badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 5px;
+      border-radius: 10px 0 0 10px;
+    }
+
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .event-name {
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.3rem;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .event-time-label {
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.8rem;
+      color: #a0aec0;
+      padding: 0.2rem 0.5rem;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 4px;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+    }
+
+    .event-description {
+      color: #a0aec0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .parallel-events {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Event type specific colors */
+    .inauguration .event-badge { background: #4cc9f0; }
+        .paper .event-badge { background: #4361ee; }
+        .product .event-badge { background: #7209b7; }
+        .break .event-badge, .lunch .event-badge { background: #f72585; }
+        .workshop .event-badge, .coding .event-badge { background: #560bad; }
+        .ipl .event-badge { background: #4cc9f0; }
+        .quiz .event-badge, .photography .event-badge { background: #fb8500; }
+        .techtalk .event-badge { background: #ffbe0b; }
+        .validation .event-badge { background: #4361ee; }
+        
+        .inauguration .time-marker { background: #4cc9f0; box-shadow: 0 0 10px #4cc9f0; }
+        .paper .time-marker { background: #4361ee; box-shadow: 0 0 10px #4361ee; }
+        .product .time-marker { background: #7209b7; box-shadow: 0 0 10px #7209b7; }
+        .break .time-marker, .lunch .time-marker { background: #f72585; box-shadow: 0 0 10px #f72585; }
+        .workshop .time-marker, .coding .time-marker { background: #560bad; box-shadow: 0 0 10px #560bad; }
+        .ipl .time-marker { background: #4cc9f0; box-shadow: 0 0 10px #4cc9f0; }
+        .quiz .time-marker, .photography .time-marker { background: #fb8500; box-shadow: 0 0 10px #fb8500; }
+        .techtalk .time-marker { background: #ffbe0b; box-shadow: 0 0 10px #ffbe0b; }
+        .validation .time-marker { background: #4361ee; box-shadow: 0 0 10px #4361ee; }
+
+    /* Navigation styles */
+
+    /* Footer styles */
+
+    @media (max-width: 768px) {
+        .timeline:before {
+                left: 100px;
+            }
+            
+            .event-time-box {
+                width: 100px;
+                padding-right: 20px;
+            }
+            
+            .time-box {
+                font-size: 0.8rem;
+                padding: 8px 5px;
+            }
+            
+            .event-cards {
+                padding-left: 1.5rem;
+            }
+            
+            .event-row {
+                margin-bottom: 1rem;
+            }
+            
+            .event-card {
+                padding: 1.2rem;
+            }
+            
+            .event-name {
+                font-size: 1.1rem;
+            }
+            
+            .parallel-events {
+                grid-template-columns: 1fr;
+            }
+            
+    }
+
+    @media (max-width: 480px) {
+        .timeline:before {
+                left: 85px;
+            }
+            
+            .event-time-box {
+                width: 85px;
+                padding-right: 15px;
+            }
+            
+            .time-box {
+                font-size: 0.7rem;
+                padding: 6px 3px;
+            }
+            
+            .time-marker {
+                right: -7px;
+                width: 14px;
+                height: 14px;
+            }
+            
+            .event-cards {
+                padding-left: 1rem;
+            }
+            
+            .event-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .event-card {
+                padding: 1rem;
+            }
+    }
+
+    nav {
+      height: 7rem;
+      width: 100vw;
+      display: flex;
+      position: fixed;
+      z-index: 10;
+      background-color: #00000000;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      transition: background-color 0.5s ease; /* Add transition for background color */
+    }
+
+    /*Styling logo*/
+    .logo {
+      padding: 0 1vw 0 4vw;
+      text-align: center;
+    }
+    .logo img {
+      height: 7rem;
+      width: 7rem;
+    }
+
+    /*Styling Links*/
+    .nav-links {
+      display: flex;
+      list-style: none;
+      width: 88vw;
+      padding: 0 0.7vw;
+      align-items: center;
+      margin: 0 5vw 0 0;
+    }
+    .nav-links li a {
+      text-decoration: none;
+      margin: 0 0.7vw;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+    .nav-links a {
+      font-size: 18px;
+    }
+
+    /*Styling Hamburger Icon*/
+    .hamburger div {
+      width: 30px;
+      height: 3px;
+      background: #f2f5f7;
+      margin: 5px;
+      transition: all 0.3s ease;
+    }
+    .hamburger {
+      display: none;
+    }
+
+    /*Stying for small screens*/
+    @media screen and (max-width: 1100px) {
+      nav {
+        position: fixed;
+        z-index: 3;
+      }
+      .hamburger {
+        display: block;
+        position: absolute;
+        cursor: pointer;
+        right: 5%;
+        top: 50%;
+        transform: translate(-5%, -50%);
+        z-index: 2;
+        transition: all 0.7s ease;
+      }
+      .nav-links {
+        position: fixed;
+        background: #131418;
+        height: 100vh;
+        width: 100%;
+        flex-direction: column;
+        clip-path: circle(50px at 100% -20%);
+        -webkit-clip-path: circle(50px at 100% -10%);
+        transition: all 1s ease-out;
+        justify-content: space-around;
+      }
+      .nav-links.open {
+        clip-path: circle(1500px at 90% -10%);
+        -webkit-clip-path: circle(1500px at 90% -10%);
+        pointer-events: all;
+      }
+      .nav-links li {
+        opacity: 0;
+      }
+      .nav-links li:nth-child(1) {
+        transition: all 0.5s ease 0.2s;
+      }
+      .nav-links li:nth-child(2) {
+        transition: all 0.5s ease 0.4s;
+      }
+      .nav-links li:nth-child(3) {
+        transition: all 0.5s ease 0.6s;
+      }
+      .nav-links li:nth-child(4) {
+        transition: all 0.5s ease 0.7s;
+      }
+      .nav-links li:nth-child(5) {
+        transition: all 0.5s ease 0.8s;
+      }
+      .nav-links li:nth-child(6) {
+        transition: all 0.5s ease 0.9s;
+        margin: 0;
+      }
+      .nav-links li:nth-child(7) {
+        transition: all 0.5s ease 1s;
+        margin: 0;
+      }
+      li.fade {
+        opacity: 1;
+      }
+    }
+    /*Animating Hamburger Icon on Click*/
+    .toggle .line1 {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    .toggle .line2 {
+      transition: all 0.7s ease;
+      width: 0;
+    }
+    .toggle .line3 {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+  </style>
+
   <body>
-    <div class="stars" id="stars"></div>
-
-    <header>
-      <div class="container">
-        <div class="logo">Lunara'25</div>
-        <p class="subtitle">Event Agenda</p>
-      </div>
-    </header>
-
-    <main class="container">
-      <div class="schedule-content">
-        <div id="day1" class="timeline">
-          <!-- Inauguration -->
-          <div class="event-row">
-            <div class="event-time-box inauguration">
-              <div class="time-box">09:00 - 09:30</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="event-card inauguration" data-time="09:00 - 09:45">
-                <div class="event-badge"></div>
-                <div class="event-header">
-                  <h3 class="event-name">INAUGURATION</h3>
-                  <span class="event-time-label">09:00 - 09:30</span>
-                </div>
-                <p class="event-description">
-                  The official opening ceremony of Lunara'25. Join us as we
-                  kickstart this exciting event with special guests and
-                  introductions.
-                </p>
-              </div>
-            </div>
+    <div id="stars" class="stars"></div>
+    <div class="chip0 cbk2v cuk8q clv5h">
+      <header class="c307p cvtc3 c0ayg">
+        <nav class="cxgjn" id="navbar">
+          <div class="logo">
+            <img
+              src="assets/Logo/logo__1_-removebg-preview.png"
+              alt="Logo Image"
+            />
           </div>
-
-          <!-- Morning Sessions -->
-          <div class="event-row">
-            <div class="event-time-box paper">
-              <div class="time-box">09:30 - 11:00</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="parallel-events">
-                <div class="event-card paper" data-time="09:30 - 11:00">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">PAPER PRESENTATION</h3>
-                    <span class="event-time-label">09:30 - 11:00</span>
-                  </div>
-                  <p class="event-description">
-                    Research scholars and students present their innovative
-                    papers and findings.
-                  </p>
-                </div>
-
-                <div class="event-card product" data-time="09:30 - 11:00">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">PRODUCT EXPO</h3>
-                    <span class="event-time-label">09:30 - 11:00</span>
-                  </div>
-                  <p class="event-description">
-                    Showcase of innovative products and prototypes developed by
-                    students and industry partners.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="hamburger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
           </div>
+          <ul class="nav-links chip0 cxgjn cutr6 c4mnq cbv5p">
+            <li>
+                <a class="chip0 c4mnq c5mpl chs2t cazq3 ckdyj cdm1x c6m7s ckwz7 cysah cua40"
+                    href="./index.html">Home</a>
+            </li>
+            <li>
+                <a class="chip0 c4mnq c5mpl chs2t cazq3 ckdyj cdm1x c6m7s ckwz7 cysah cua40"
+                    href="./index.html#event_details">Event Details</a>
+            </li>
+            <li>
+                <a class="chip0 c4mnq c5mpl chs2t cazq3 ckdyj cdm1x c6m7s ckwz7 cysah cua40"
+                    href="./index.html#contactlist">Contact</a>
+            </li>
+            <li>
+                <a class="chip0 c4mnq c5mpl chs2t cazq3 ckdyj cdm1x c6m7s ckwz7 cysah cua40"
+                    href="./agenda.html">Event Schedule</a>
+            </li>
+            <li class="c8h5l">
+                <a class="c2pi2 c0ayg c4wey cl6ef cf4pm cqbpd cxmkl c4aul c76qn"
+                    href="./events.html#all-events">
+                    Register Now <span class="cfe40 cr1tk c56im cv73b c6m7s ckwz7 ccx8x">
+                </a>
+            </li>
+        </ul>
+        </nav>
+      </header>
 
-          <!-- Break -->
-          <div class="event-row">
-            <div class="event-time-box break">
-              <div class="time-box">11:00 - 11:20</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="event-card break" data-time="11:00 - 11:20">
-                <div class="event-badge"></div>
-                <div class="event-header">
-                  <h3 class="event-name">BREAK</h3>
-                  <span class="event-time-label">11:00 - 11:20</span>
-                </div>
-                <p class="event-description">
-                  Refreshment break. Grab a quick snack and network with other
-                  attendees.
-                </p>
+      <main class="container" style="padding-top: 8rem;">
+        <div class="schedule-content">
+          <div id="day1" class="timeline">
+            <!-- Inauguration -->
+            <div class="event-row">
+              <div class="event-time-box inauguration">
+                <div class="time-box">09:00 - 09:30</div>
+                <div class="time-marker"></div>
               </div>
-            </div>
-          </div>
-
-          <!-- Late Morning Sessions -->
-          <div class="event-row">
-            <div class="event-time-box paper">
-              <div class="time-box">11:20 - 12:30</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="parallel-events">
-                <div class="event-card paper" data-time="11:20 - 12:30">
+              <div class="event-cards">
+                <div class="event-card inauguration" data-time="09:00 - 09:30">
                   <div class="event-badge"></div>
                   <div class="event-header">
-                    <h3 class="event-name">PAPER PRESENTATION</h3>
-                    <span class="event-time-label">11:20 - 12:30</span>
+                    <h3 class="event-name">INAUGURATION</h3>
+                    <span class="event-time-label">09:00 - 09:30</span>
                   </div>
                   <p class="event-description">
-                    Continuation of research paper presentations on cutting-edge
-                    topics.
-                  </p>
-                </div>
-
-                <div class="event-card product" data-time="11:20 - 12:30">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">PRODUCT EXPO</h3>
-                    <span class="event-time-label">11:20 - 12:30</span>
-                  </div>
-                  <p class="event-description">
-                    Further exploration of innovative products and solutions.
+                    The official opening ceremony of Lunara'25. Join us as we
+                    kickstart this exciting event with special guests and
+                    introductions.
                   </p>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Lunch -->
-          <div class="event-row">
-            <div class="event-time-box lunch">
-              <div class="time-box">11:30 - 01:00</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="event-card lunch" data-time="11:30 - 01:00">
-                <div class="event-badge"></div>
-                <div class="event-header">
-                  <h3 class="event-name">LUNCH</h3>
-                  <span class="event-time-label">11:30 - 01:00</span>
+            <!-- Morning Sessions -->
+            <div class="event-row">
+              <div class="event-time-box paper">
+                <div class="time-box">09:30 - 11:00</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="parallel-events">
+                  <div class="event-card paper" data-time="09:30 - 11:00">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">PAPER PRESENTATION</h3>
+                      <span class="event-time-label">09:30 - 11:00</span>
+                    </div>
+                    <p class="event-description">
+                      Research scholars and students present their innovative
+                      papers and findings.
+                    </p>
+                  </div>
+
+                  <div class="event-card product" data-time="09:30 - 11:00">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">PRODUCT EXPO</h3>
+                      <span class="event-time-label">09:30 - 11:00</span>
+                    </div>
+                    <p class="event-description">
+                      Showcase of innovative products and prototypes developed
+                      by students and industry partners.
+                    </p>
+                  </div>
                 </div>
-                <p class="event-description">
-                  Lunch break. Enjoy a delicious meal and connect with fellow
-                  participants.
-                </p>
               </div>
             </div>
-          </div>
 
-          <!-- This section needs to be restructured -->
-          <div class="event-row">
-            <div class="event-time-box coding">
-              <div class="time-box">01:00 - 03:00</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="event-card coding" data-time="01:00 - 03:00">
-                <div class="event-badge"></div>
-                <div class="event-header">
-                  <h3 class="event-name">CODING</h3>
-                  <span class="event-time-label">01:00 - 03:00</span>
+            <!-- Break -->
+            <div class="event-row">
+              <div class="event-time-box break">
+                <div class="time-box">11:00 - 11:20</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="event-card break" data-time="11:00 - 11:20">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">BREAK</h3>
+                    <span class="event-time-label">11:00 - 11:20</span>
+                  </div>
+                  <p class="event-description">
+                    Refreshment break. Grab a quick snack and network with other
+                    attendees.
+                  </p>
                 </div>
-                <p class="event-description">
-                  Competitive coding challenge to test and showcase programming
-                  skills.
-                </p>
               </div>
             </div>
-          </div>
 
-          <!-- Early Afternoon Sessions -->
-          <div class="event-row">
-            <div class="event-time-box workshop">
-              <div class="time-box">01:30 - 03:00</div>
-              <div class="time-marker"></div>
+            <!-- Late Morning Sessions -->
+            <div class="event-row">
+              <div class="event-time-box paper">
+                <div class="time-box">11:20 - 12:30</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="parallel-events">
+                  <div class="event-card paper" data-time="11:20 - 12:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">PAPER PRESENTATION</h3>
+                      <span class="event-time-label">11:20 - 12:30</span>
+                    </div>
+                    <p class="event-description">
+                      Continuation of research paper presentations on
+                      cutting-edge topics.
+                    </p>
+                  </div>
+
+                  <div class="event-card product" data-time="11:20 - 12:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">PRODUCT EXPO</h3>
+                      <span class="event-time-label">11:20 - 12:30</span>
+                    </div>
+                    <p class="event-description">
+                      Further exploration of innovative products and solutions.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="event-cards">
-              <div class="parallel-events">
+
+            <!-- Lunch -->
+            <div class="event-row">
+              <div class="event-time-box lunch">
+                <div class="time-box">12:30 - 01:00</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="event-card lunch" data-time="12:30 - 01:00">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">LUNCH</h3>
+                    <span class="event-time-label">12:30 - 01:00</span>
+                  </div>
+                  <p class="event-description">
+                    Lunch break. Enjoy a delicious meal and connect with fellow
+                    participants.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coding -->
+            <div class="event-row">
+              <div class="event-time-box coding">
+                <div class="time-box">01:00 - 03:00</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="event-card coding" data-time="01:00 - 03:00">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">CODING</h3>
+                    <span class="event-time-label">01:00 - 03:00</span>
+                  </div>
+                  <p class="event-description">
+                    Competitive coding challenge to test and showcase
+                    programming skills.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workshop -->
+            <div class="event-row">
+              <div class="event-time-box workshop">
+                <div class="time-box">01:30 - 03:00</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
                 <div class="event-card workshop" data-time="01:30 - 03:00">
                   <div class="event-badge"></div>
                   <div class="event-header">
@@ -655,161 +722,744 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Late Afternoon Sessions -->
-          <div class="event-row">
-            <div class="event-time-box ipl">
-              <div class="time-box">03:00 - 04:30</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="parallel-events">
-                <div class="event-card ipl" data-time="03:00 - 04:30">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">WORD BEE</h3>
-                    <span class="event-time-label">03:00 - 04:30</span>
+            <!-- Late Afternoon Sessions -->
+            <div class="event-row">
+              <div class="event-time-box ipl">
+                <div class="time-box">03:00 - 04:30</div>
+                <div class="time-marker"></div>
+              </div>
+              <div class="event-cards">
+                <div class="parallel-events">
+                  <div class="event-card ipl" data-time="03:00 - 04:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">WORD BEE</h3>
+                      <span class="event-time-label">03:00 - 04:30</span>
+                    </div>
+                    <p class="event-description">
+                      Innovative Programming League - A team-based programming
+                      competition.
+                    </p>
                   </div>
-                  <p class="event-description">
-                    Innovative Programming League - A team-based programming
-                    competition.
-                  </p>
+
+                  <div class="event-card quiz" data-time="03:00 - 04:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">QUIZ</h3>
+                      <span class="event-time-label">03:00 - 04:30</span>
+                    </div>
+                    <p class="event-description">
+                      Technical quiz competition to test knowledge in various
+                      domains.
+                    </p>
+                  </div>
                 </div>
 
-                <div class="event-card quiz" data-time="03:00 - 04:30">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">QUIZ</h3>
-                    <span class="event-time-label">03:00 - 04:30</span>
+                <div class="parallel-events" style="margin-top: 1rem">
+                  <div class="event-card techtalk" data-time="03:00 - 04:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">TECHTALK</h3>
+                      <span class="event-time-label">03:00 - 04:30</span>
+                    </div>
+                    <p class="event-description">
+                      Engaging discussions and presentations on emerging
+                      technologies and industry trends.
+                    </p>
                   </div>
-                  <p class="event-description">
-                    Technical quiz competition to test knowledge in various
-                    domains.
-                  </p>
+
+                  <div class="event-card photography" data-time="03:00 - 04:30">
+                    <div class="event-badge"></div>
+                    <div class="event-header">
+                      <h3 class="event-name">PHOTOGRAPHY</h3>
+                      <span class="event-time-label">03:00 - 04:30</span>
+                    </div>
+                    <p class="event-description">
+                      Photography contest showcasing creative and technical
+                      photography skills.
+                    </p>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="parallel-events" style="margin-top: 1rem">
-                <div class="event-card techtalk" data-time="03:00 - 04:30">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">TECHTALK</h3>
-                    <span class="event-time-label">03:00 - 04:30</span>
-                  </div>
-                  <p class="event-description">
-                    Engaging discussions and presentations on emerging
-                    technologies and industry trends.
-                  </p>
-                </div>
-
-                <div class="event-card photography" data-time="03:00 - 04:30">
-                  <div class="event-badge"></div>
-                  <div class="event-header">
-                    <h3 class="event-name">PHOTOGRAPHY</h3>
-                    <span class="event-time-label">03:00 - 04:30</span>
-                  </div>
-                  <p class="event-description">
-                    Photography contest showcasing creative and technical
-                    photography skills.
-                  </p>
-                </div>
+            <!-- Validation -->
+            <div class="event-row">
+              <div class="event-time-box validation">
+                <div class="time-box">04:30 - 05:30</div>
+                <div class="time-marker"></div>
               </div>
-            </div>
-          </div>
-
-          <!-- Validation -->
-          <div class="event-row">
-            <div class="event-time-box validation">
-              <div class="time-box">04:30 - 05:30</div>
-              <div class="time-marker"></div>
-            </div>
-            <div class="event-cards">
-              <div class="event-card validation" data-time="04:30 - 05:30">
-                <div class="event-badge"></div>
-                <div class="event-header">
-                  <h3 class="event-name">VALIDATION</h3>
-                  <span class="event-time-label">04:30 - 05:30</span>
+              <div class="event-cards">
+                <div class="event-card validation" data-time="04:30 - 05:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">VALEDICTION</h3>
+                    <span class="event-time-label">04:30 - 05:30</span>
+                  </div>
+                  <p class="event-description">
+                    Closing session for Day 1 with feedback collection and
+                    validation of participation certificates.
+                  </p>
                 </div>
-                <p class="event-description">
-                  Closing session for Day 1 with feedback collection and
-                  validation of participation certificates.
-                </p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div style="text-align: center">
-        <a href="#" class="back-button">Back to Home</a>
-      </div>
-    </main>
-
+      </main>
+    </div>
     <footer>
-      <div class="container">
-        <p>© Lunara'25 | Department Event</p>
-      </div>
+        <div class="footer">
+            <div class="row" style="display: flex;width: 200px;justify-content: space-between; margin-bottom: 20px;">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bitlunara@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+                <a href="https://www.instagram.com/lunara2k25?igsh=MTBvMjY4cHp2M3p1bw=="><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/message/TILZEJ6EYJD2F1"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+            
+            <div class="row navigation-links" style="font-weight: bolder;font-size: 14.5px; max-width: 100vw !important;">
+                <ul style="margin-left: 10px;">
+                    <li><a href="./events.html">Home</a></li>
+                    <li><a href="./index.html#about">About</a></li>
+                    <li><a href="./index.html#event_details">Event Details</a></li>
+                    <li><a href="./index.html#contactlist">Contact Us</a></li>
+                    <li><a href="./events.html#all-events">Register</a></li>
+                </ul>
+            </div>
+            
+            <div class="row" style="font-size: 15px;text-align:center;">
+                Created with ❤️ <a href="#" id="lunaraTeamLink"><b style="font-weight: bold;">LUNARA WEB DEV TEAM</b></a>
+            </div>
+        </div>
     </footer>
-
-    <script>
-      // Create stars in the background
-      function createStars() {
-        const stars = document.getElementById("stars");
-        const count = 150;
-
-        for (let i = 0; i < count; i++) {
-          const star = document.createElement("div");
-          star.classList.add("star");
-
-          // Random position
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-
-          // Random size
-          const size = Math.random() * 2;
-
-          // Random animation delay
-          const delay = Math.random() * 5;
-
-          star.style.left = `${x}%`;
-          star.style.top = `${y}%`;
-          star.style.width = `${size}px`;
-          star.style.height = `${size}px`;
-          star.style.animationDelay = `${delay}s`;
-
-          stars.appendChild(star);
+    
+    <style>
+        @media screen and (max-width: 768px) {
+            .navigation-links {
+                display: none;
+            }
         }
-      }
+    </style>
 
-      // Animate event rows on scroll
-      function animateOnScroll() {
-        const rows = document.querySelectorAll(".event-row");
+<div class="dev-modal-overlay" id="devModalOverlay">
+    <div class="dev-modal">
+        <button class="close-modal-btn" id="closeModalBtn">
+            <i class="fa-solid fa-times"></i>
+        </button>
+        
+        <div class="stars-container" id="starsContainer">
+            <!-- Stars will be added dynamically via JS -->
+        </div>
+        
+        <div class="dev-modal-header">
+            <h2>Lunara Web Development Team</h2>
+        </div>
+        
+        <div class="dev-modal-content">
+            <div class="developers-container">
+                <!-- Developer 1 -->
+                <div class="developer-card">
+                    <div class="profile-img-container">
+                        <!-- Replace with your developer's photo -->
+                        <img src="https://media.licdn.com/dms/image/v2/D5603AQG9UTayvFnYYg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719833659338?e=1747267200&v=beta&t=5MR27JrmURQu7hTcYKwzoXnPc7CjSXxo2HuxzTliZFQ" alt="Developer 1" class="profile-img">
+                    </div>
+                    <h3 class="developer-name">Pranav Aditya P S</h3>
+                    
+                    <div class="dev-social-links">
+                        <!-- LinkedIn link -->
+                        <a href="https://www.linkedin.com/in/pranav-aditya-ps/" class="dev-social-link"><i class="fa-brands fa-linkedin"></i></a>
+                        <!-- Email link -->
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pspranavadityacvm@gmail.com" target="_blank" class="dev-social-link"><i class="fa-regular fa-envelope"></i></a>
+                        <!-- Mobile number link -->
+                        <a href="tel:9751176717" class="dev-social-link"><i class="fa-solid fa-phone"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Developer 2 -->
+                <div class="developer-card">
+                    <div class="profile-img-container">
+                        <!-- Replace with your developer's photo -->
+                        <img src="https://media.licdn.com/dms/image/v2/D5603AQHFqOcIhr2UWg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1722494084276?e=1747267200&v=beta&t=8CK4upzV2W8D8UqFMMNWX1Z7s0Pwbs5VxWeZTd26B3g" alt="Developer 2" class="profile-img">
+                    </div>
+                    <h3 class="developer-name">Suganth R</h3>
+                   
+                    <div class="dev-social-links">
+                        <!-- LinkedIn link -->
+                        <a href="https://www.linkedin.com/in/suganth-r-63b13a29b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="dev-social-link"><i class="fa-brands fa-linkedin"></i></a>
+                        <!-- Email link -->
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=suganth.cs23@bitsathy.ac.in" target="_blank" class="dev-social-link">
+                            <i class="fa-regular fa-envelope"></i>
+                        </a>
+                        <!-- Mobile number link -->
+                        <a href="tel:9345166901" class="dev-social-link"><i class="fa-solid fa-phone"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-              }
+<style>
+    /* Developer Modal Styles */
+    .dev-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        perspective: 1000px;
+        overflow: hidden;
+    }
+    
+    .dev-modal {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        height: 60vh;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(111, 92, 255, 0.6);
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transform: translateY(50px);
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.17, 0.84, 0.44, 1);
+    }
+    
+    .dev-modal.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .dev-modal-header {
+        padding: 20px 30px;
+        text-align: center;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dev-modal-header h2 {
+        color: #fff;
+        font-size: 28px;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 0 0 10px rgba(142, 100, 255, 0.8);
+    }
+    
+    .dev-modal-content {
+        height: calc(100% - 80px);
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+    
+    .dev-modal-content::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .dev-modal-content::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+    }
+    
+    .developers-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        padding: 40px 20px;
+    }
+    
+    .developer-card {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.17, 0.84, 0.44, 1);
+    }
+    
+    .developer-card.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .developer-card:before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+        transform: rotate(45deg);
+        animation: shine 6s infinite;
+    }
+    
+    @keyframes shine {
+        0% {
+            top: -100%;
+            left: -100%;
+        }
+        50%, 100% {
+            top: 100%;
+            left: 100%;
+        }
+    }
+    
+    .profile-img-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 25px;
+    }
+    
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #9370DB;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-img-container:after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        border: 2px solid rgba(147, 112, 219, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.6;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.3;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 0.6;
+        }
+    }
+    
+    .developer-name {
+        color: #fff;
+        font-size: 22px;
+        margin: 0 0 10px;
+        font-weight: 600;
+    }
+    
+    .developer-title {
+        color: #9370DB;
+        font-size: 16px;
+        margin: 0 0 20px;
+        letter-spacing: 1px;
+    }
+    
+    .developer-bio {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .developer-skills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .skill-tag {
+        background: rgba(147, 112, 219, 0.2);
+        color: #b19eff;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        border: 1px solid rgba(147, 112, 219, 0.3);
+    }
+    
+    .dev-social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .dev-social-link {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9370DB;
+        transition: all 0.3s ease;
+        font-size: 16px;
+    }
+    
+    .dev-social-link:hover {
+        background: #9370DB;
+        color: #fff;
+        transform: translateY(-3px);
+    }
+    
+    .close-modal-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+    
+    .close-modal-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+    }
+    
+    .stars-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        opacity: 0;
+        animation: twinkle 6s infinite;
+    }
+    
+    @keyframes twinkle {
+        0% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+    }
+    
+    .shooting-star {
+        position: absolute;
+        width: 150px;
+        height: 2px;
+        background: linear-gradient(90deg, white, transparent);
+        opacity: 0;
+        transform-origin: left;
+        animation: shoot 8s infinite ease-out;
+    }
+    
+    @keyframes shoot {
+        0% {
+            opacity: 0;
+            transform: translateX(0) translateY(0) rotate(0deg);
+        }
+        5% {
+            opacity: 1;
+        }
+        10% {
+            opacity: 0;
+            transform: translateX(300px) translateY(300px) rotate(45deg);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(300px) translateY(300px) rotate(45deg);
+        }
+    }
+    @media screen and (max-width: 768px) {
+  .developers-container {
+    padding-bottom: 80px; /* Adds extra padding at the bottom on mobile */
+  }
+  
+  /* You might also want to adjust the overall modal height for better mobile experience */
+  .dev-modal {
+    height: 70vh; /* Slightly taller on mobile for better scrolling */
+  }
+}
+    
+</style>
+
+<script>
+    // Developer Modal Script
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get elements
+        const devTeamLink = document.getElementById('lunaraTeamLink');
+        const devModalOverlay = document.getElementById('devModalOverlay');
+        const devModal = document.querySelector('.dev-modal');
+        const developerCards = document.querySelectorAll('.developer-card');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const starsContainer = document.getElementById('starsContainer');
+        
+        // Create stars and shooting stars
+        function createCelestialElements() {
+            // Clear existing stars
+            starsContainer.innerHTML = '';
+            
+            // Create stars
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1-3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random delay
+                star.style.animationDelay = `${Math.random() * 6}s`;
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Create shooting stars
+            for (let i = 0; i < 4; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                
+                // Random position and angle
+                shootingStar.style.left = `${Math.random() * 100}%`;
+                shootingStar.style.top = `${Math.random() * 100}%`;
+                shootingStar.style.transform = `rotate(${Math.random() * 45}deg)`;
+                
+                // Random delay
+                shootingStar.style.animationDelay = `${Math.random() * 8}s`;
+                
+                starsContainer.appendChild(shootingStar);
+            }
+        }
+        
+        // Open modal function
+        function openDevModal() {
+            devModalOverlay.style.display = 'flex';
+            
+            // Create stars
+            createCelestialElements();
+            
+            // Animate modal entrance
+            setTimeout(() => {
+                devModal.classList.add('active');
+            }, 10);
+            
+            // Animate developer cards entrance (staggered)
+            developerCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('active');
+                }, 300 + (index * 200));
             });
-          },
-          { threshold: 0.1 }
-        );
-
-        rows.forEach((row, index) => {
-          // Add staggered delay to each row
-          setTimeout(() => {
-            observer.observe(row);
-          }, index * 100);
+        }
+        
+        // Close modal function
+        function closeDevModal() {
+            devModal.classList.remove('active');
+            developerCards.forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Hide overlay after animation completes
+            setTimeout(() => {
+                devModalOverlay.style.display = 'none';
+            }, 600);
+        }
+        
+        // Event listeners
+        devTeamLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            openDevModal();
+            console.log("Team link clicked, opening modal");
         });
-      }
+        
+        closeModalBtn.addEventListener('click', closeDevModal);
+        
+        devModalOverlay.addEventListener('click', function(e) {
+            if (e.target === devModalOverlay) {
+                closeDevModal();
+            }
+        });
+    });
+</script>
 
-      // Initialize
-      document.addEventListener("DOMContentLoaded", () => {
-        createStars();
-        setTimeout(animateOnScroll, 500);
-      });
-    </script>
   </body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="./js/jquery-3.5.1.min.dc5e7f18c8.js.download"></script>
+  <script src="./js/webflow.8e97352ec.js"></script>
+  <script>
+    window.addEventListener("hashchange", function () {
+      var hash = window.location.hash.substring(1);
+      var sections = document.querySelectorAll("events");
+      sections.forEach(function (section) {
+        if (section.id === hash) {
+          section.style.display = "block";
+          section.scrollIntoView({ behavior: "smooth" });
+        } else {
+          section.style.display = "none";
+        }
+      });
+      window.scrollTo(0, 0);
+    });
+
+    window.dispatchEvent(new Event("hashchange"));
+
+    function openFullscreen() {
+      var fullscreenSection = document.getElementById("fullscreen");
+      fullscreenSection.classList.add("show");
+    }
+
+    function closeFullscreen() {
+      var fullscreenSection = document.getElementById("fullscreen");
+      fullscreenSection.classList.remove("show");
+    }
+  </script>
+  <script>
+    var $cell = $(".popup-card");
+
+    //open and close popup-card when clicked on popup-card
+    $cell.find(".js-expander").click(function () {
+      var $thisCell = $(this).closest(".popup-card");
+
+      if ($thisCell.hasClass("is-collapsed")) {
+        $cell
+          .not($thisCell)
+          .removeClass("is-expanded")
+          .addClass("is-collapsed")
+          .addClass("is-inactive");
+        $thisCell.removeClass("is-collapsed").addClass("is-expanded");
+
+        if ($cell.not($thisCell).hasClass("is-inactive")) {
+          //do nothing
+        } else {
+          $cell.not($thisCell).addClass("is-inactive");
+        }
+      } else {
+        $thisCell.removeClass("is-expanded").addClass("is-collapsed");
+        $cell.not($thisCell).removeClass("is-inactive");
+      }
+    });
+
+    //close popup-card when click on cross
+    $cell.find(".js-collapser").click(function () {
+      var $thisCell = $(this).closest(".popup-card");
+
+      $thisCell.removeClass("is-expanded").addClass("is-collapsed");
+      $cell.not($thisCell).removeClass("is-inactive");
+    });
+
+    function checkURLChange() {
+      var currentURL = window.location.href;
+
+      setInterval(function () {
+        if (window.location.href !== currentURL) {
+          currentURL = window.location.href;
+          location.reload();
+        }
+      }, 1000); // Check every second for URL change
+    }
+
+    // Call the function when the page loads
+    window.onload = function () {
+      checkURLChange();
+    };
+  </script>
+  <script>
+    // Create stars in the background
+    function createStars() {
+      const stars = document.getElementById("stars");
+      const count = 150;
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+
+        // Random size
+        const size = Math.random() * 2;
+
+        // Random animation delay
+        const delay = Math.random() * 5;
+
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animationDelay = `${delay}s`;
+
+        stars.appendChild(star);
+      }
+    }
+
+    // Animate event rows on scroll
+    function animateOnScroll() {
+      const rows = document.querySelectorAll(".event-row");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      rows.forEach((row, index) => {
+        // Add staggered delay to each row
+        setTimeout(() => {
+          observer.observe(row);
+        }, index * 100);
+      });
+    }
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      createStars();
+      setTimeout(animateOnScroll, 0);
+    });
+  </script>
 </html>
