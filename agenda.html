@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lunara'25 - Event Schedule</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Exo 2", sans-serif;
+        background-color: #0a0e17;
+        color: #e1e6f0;
+        overflow-x: hidden;
+        background-image: radial-gradient(
+            circle at 20% 30%,
+            rgba(67, 97, 238, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(111, 63, 219, 0.1) 0%,
+            transparent 50%
+          );
+      }
+
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .star {
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 50%;
+        animation: twinkle 5s infinite ease-in-out;
+      }
+
+      @keyframes twinkle {
+        0% {
+          opacity: 0.2;
+        }
+        50% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0.2;
+        }
+      }
+
+      header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          180deg,
+          rgba(10, 14, 23, 0.9) 0%,
+          rgba(10, 14, 23, 0.7) 100%
+        );
+        backdrop-filter: blur(5px);
+        border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+      }
+
+      h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, #4361ee, #7209b7, #f72585);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glow {
+        0% {
+          text-shadow: 0 0 10px rgba(67, 97, 238, 0.6);
+        }
+        100% {
+          text-shadow: 0 0 20px rgba(247, 37, 133, 0.8),
+            0 0 30px rgba(114, 9, 183, 0.4);
+        }
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        color: #a0aec0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .schedule-content {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 0;
+      }
+
+      .timeline {
+        position: relative;
+      }
+
+      .timeline:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 150px;
+        height: 100%;
+        width: 3px;
+        background: linear-gradient(to bottom, #4361ee, #7209b7, #f72585);
+        border-radius: 5px;
+        z-index: 1;
+      }
+
+      .event-row {
+        display: flex;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease;
+      }
+
+      .event-row.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .event-time-box {
+        width: 150px;
+        flex-shrink: 0;
+        position: relative;
+        padding-right: 30px;
+      }
+
+      .time-box {
+        font-family: "Orbitron", sans-serif;
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(67, 97, 238, 0.3);
+        border-radius: 6px;
+        padding: 10px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(5px);
+        margin-top: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .time-box:hover {
+        border-color: rgba(67, 97, 238, 0.8);
+        box-shadow: 0 0 15px rgba(67, 97, 238, 0.4);
+      }
+
+      .time-marker {
+        position: absolute;
+        right: -9px;
+        top: 21px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #4361ee;
+        box-shadow: 0 0 10px #4361ee;
+        z-index: 2;
+      }
+
+      .event-cards {
+        flex: 1;
+        padding-left: 2rem;
+      }
+
+      .event-card {
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(67, 97, 238, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        border-color: rgba(67, 97, 238, 0.5);
+      }
+
+      .event-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .event-badge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 5px;
+        border-radius: 10px 0 0 10px;
+      }
+
+      .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+
+      .event-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.3rem;
+        color: #ffffff;
+        margin: 0;
+      }
+
+      .event-time-label {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.8rem;
+        color: #a0aec0;
+        padding: 0.2rem 0.5rem;
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 4px;
+        border: 1px solid rgba(67, 97, 238, 0.2);
+      }
+
+      .event-description {
+        color: #a0aec0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .parallel-events {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      /* Event type specific colors */
+      .inauguration .event-badge {
+        background: #4cc9f0;
+      }
+      .paper .event-badge {
+        background: #4361ee;
+      }
+      .product .event-badge {
+        background: #7209b7;
+      }
+      .break .event-badge,
+      .lunch .event-badge {
+        background: #f72585;
+      }
+      .workshop .event-badge,
+      .coding .event-badge {
+        background: #560bad;
+      }
+      .ipl .event-badge {
+        background: #4cc9f0;
+      }
+      .quiz .event-badge,
+      .photography .event-badge {
+        background: #fb8500;
+      }
+      .techtalk .event-badge {
+        background: #ffbe0b;
+      }
+      .validation .event-badge {
+        background: #4361ee;
+      }
+
+      .inauguration .time-marker {
+        background: #4cc9f0;
+        box-shadow: 0 0 10px #4cc9f0;
+      }
+      .paper .time-marker {
+        background: #4361ee;
+        box-shadow: 0 0 10px #4361ee;
+      }
+      .product .time-marker {
+        background: #7209b7;
+        box-shadow: 0 0 10px #7209b7;
+      }
+      .break .time-marker,
+      .lunch .time-marker {
+        background: #f72585;
+        box-shadow: 0 0 10px #f72585;
+      }
+      .workshop .time-marker,
+      .coding .time-marker {
+        background: #560bad;
+        box-shadow: 0 0 10px #560bad;
+      }
+      .ipl .time-marker {
+        background: #4cc9f0;
+        box-shadow: 0 0 10px #4cc9f0;
+      }
+      .quiz .time-marker,
+      .photography .time-marker {
+        background: #fb8500;
+        box-shadow: 0 0 10px #fb8500;
+      }
+      .techtalk .time-marker {
+        background: #ffbe0b;
+        box-shadow: 0 0 10px #ffbe0b;
+      }
+      .validation .time-marker {
+        background: #4361ee;
+        box-shadow: 0 0 10px #4361ee;
+      }
+
+      footer {
+        text-align: center;
+        padding: 3rem 0;
+        color: #64748b;
+        font-size: 0.9rem;
+        border-top: 1px solid rgba(67, 97, 238, 0.2);
+        background: rgba(10, 14, 23, 0.8);
+      }
+
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        background: rgba(30, 41, 59, 0.7);
+        color: #e1e6f0;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        text-decoration: none;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.95rem;
+        margin-top: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .back-button:hover {
+        background: rgba(67, 97, 238, 0.3);
+        border-color: #4361ee;
+        box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
+        transform: translateY(-3px);
+      }
+
+      .back-button:before {
+        content: "←";
+        margin-right: 0.5rem;
+      }
+
+      .logo {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 1rem;
+        background: linear-gradient(90deg, #4361ee, #7209b7, #f72585);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @media (max-width: 768px) {
+        .timeline:before {
+          left: 100px;
+        }
+
+        .event-time-box {
+          width: 100px;
+          padding-right: 20px;
+        }
+
+        .time-box {
+          font-size: 0.8rem;
+          padding: 8px 5px;
+        }
+
+        .event-cards {
+          padding-left: 1.5rem;
+        }
+
+        .event-row {
+          margin-bottom: 1rem;
+        }
+
+        .event-card {
+          padding: 1.2rem;
+        }
+
+        .event-name {
+          font-size: 1.1rem;
+        }
+
+        .parallel-events {
+          grid-template-columns: 1fr;
+        }
+
+        /* FIXED: Remove the duplicate time display in mobile view */
+        /* Instead of showing time twice, just use the original time label */
+        /* We're removing this block that was causing the duplication */
+        /*
+            .parallel-events .event-card::before {
+                content: attr(data-time);
+                display: block;
+                font-family: 'Orbitron', sans-serif;
+                font-size: 0.7rem;
+                color: #a0aec0;
+                margin-bottom: 0.5rem;
+            }
+            */
+      }
+
+      @media (max-width: 480px) {
+        .timeline:before {
+          left: 85px;
+        }
+
+        .event-time-box {
+          width: 85px;
+          padding-right: 15px;
+        }
+
+        .time-box {
+          font-size: 0.7rem;
+          padding: 6px 3px;
+        }
+
+        .time-marker {
+          right: -7px;
+          width: 14px;
+          height: 14px;
+        }
+
+        .event-cards {
+          padding-left: 1rem;
+        }
+
+        .event-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .subtitle {
+          font-size: 1.2rem;
+        }
+
+        .logo {
+          font-size: 2rem;
+        }
+
+        .event-card {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars" id="stars"></div>
+
+    <header>
+      <div class="container">
+        <div class="logo">Lunara'25</div>
+        <p class="subtitle">Event Agenda</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="schedule-content">
+        <div id="day1" class="timeline">
+          <!-- Inauguration -->
+          <div class="event-row">
+            <div class="event-time-box inauguration">
+              <div class="time-box">09:00 - 09:30</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="event-card inauguration" data-time="09:00 - 09:45">
+                <div class="event-badge"></div>
+                <div class="event-header">
+                  <h3 class="event-name">INAUGURATION</h3>
+                  <span class="event-time-label">09:00 - 09:30</span>
+                </div>
+                <p class="event-description">
+                  The official opening ceremony of Lunara'25. Join us as we
+                  kickstart this exciting event with special guests and
+                  introductions.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Morning Sessions -->
+          <div class="event-row">
+            <div class="event-time-box paper">
+              <div class="time-box">09:30 - 11:00</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="parallel-events">
+                <div class="event-card paper" data-time="09:30 - 11:00">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">PAPER PRESENTATION</h3>
+                    <span class="event-time-label">09:30 - 11:00</span>
+                  </div>
+                  <p class="event-description">
+                    Research scholars and students present their innovative
+                    papers and findings.
+                  </p>
+                </div>
+
+                <div class="event-card product" data-time="09:30 - 11:00">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">PRODUCT EXPO</h3>
+                    <span class="event-time-label">09:30 - 11:00</span>
+                  </div>
+                  <p class="event-description">
+                    Showcase of innovative products and prototypes developed by
+                    students and industry partners.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Break -->
+          <div class="event-row">
+            <div class="event-time-box break">
+              <div class="time-box">11:00 - 11:20</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="event-card break" data-time="11:00 - 11:20">
+                <div class="event-badge"></div>
+                <div class="event-header">
+                  <h3 class="event-name">BREAK</h3>
+                  <span class="event-time-label">11:00 - 11:20</span>
+                </div>
+                <p class="event-description">
+                  Refreshment break. Grab a quick snack and network with other
+                  attendees.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Late Morning Sessions -->
+          <div class="event-row">
+            <div class="event-time-box paper">
+              <div class="time-box">11:20 - 12:30</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="parallel-events">
+                <div class="event-card paper" data-time="11:20 - 12:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">PAPER PRESENTATION</h3>
+                    <span class="event-time-label">11:20 - 12:30</span>
+                  </div>
+                  <p class="event-description">
+                    Continuation of research paper presentations on cutting-edge
+                    topics.
+                  </p>
+                </div>
+
+                <div class="event-card product" data-time="11:20 - 12:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">PRODUCT EXPO</h3>
+                    <span class="event-time-label">11:20 - 12:30</span>
+                  </div>
+                  <p class="event-description">
+                    Further exploration of innovative products and solutions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lunch -->
+          <div class="event-row">
+            <div class="event-time-box lunch">
+              <div class="time-box">11:30 - 01:00</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="event-card lunch" data-time="11:30 - 01:00">
+                <div class="event-badge"></div>
+                <div class="event-header">
+                  <h3 class="event-name">LUNCH</h3>
+                  <span class="event-time-label">11:30 - 01:00</span>
+                </div>
+                <p class="event-description">
+                  Lunch break. Enjoy a delicious meal and connect with fellow
+                  participants.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- This section needs to be restructured -->
+          <div class="event-row">
+            <div class="event-time-box coding">
+              <div class="time-box">01:00 - 03:00</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="event-card coding" data-time="01:00 - 03:00">
+                <div class="event-badge"></div>
+                <div class="event-header">
+                  <h3 class="event-name">CODING</h3>
+                  <span class="event-time-label">01:00 - 03:00</span>
+                </div>
+                <p class="event-description">
+                  Competitive coding challenge to test and showcase programming
+                  skills.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Early Afternoon Sessions -->
+          <div class="event-row">
+            <div class="event-time-box workshop">
+              <div class="time-box">01:30 - 03:00</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="parallel-events">
+                <div class="event-card workshop" data-time="01:30 - 03:00">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">WORKSHOP</h3>
+                    <span class="event-time-label">01:30 - 03:00</span>
+                  </div>
+                  <p class="event-description">
+                    Interactive workshop session covering advanced technological
+                    concepts and hands-on learning.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Late Afternoon Sessions -->
+          <div class="event-row">
+            <div class="event-time-box ipl">
+              <div class="time-box">03:00 - 04:30</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="parallel-events">
+                <div class="event-card ipl" data-time="03:00 - 04:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">WORD BEE</h3>
+                    <span class="event-time-label">03:00 - 04:30</span>
+                  </div>
+                  <p class="event-description">
+                    Innovative Programming League - A team-based programming
+                    competition.
+                  </p>
+                </div>
+
+                <div class="event-card quiz" data-time="03:00 - 04:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">QUIZ</h3>
+                    <span class="event-time-label">03:00 - 04:30</span>
+                  </div>
+                  <p class="event-description">
+                    Technical quiz competition to test knowledge in various
+                    domains.
+                  </p>
+                </div>
+              </div>
+
+              <div class="parallel-events" style="margin-top: 1rem">
+                <div class="event-card techtalk" data-time="03:00 - 04:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">TECHTALK</h3>
+                    <span class="event-time-label">03:00 - 04:30</span>
+                  </div>
+                  <p class="event-description">
+                    Engaging discussions and presentations on emerging
+                    technologies and industry trends.
+                  </p>
+                </div>
+
+                <div class="event-card photography" data-time="03:00 - 04:30">
+                  <div class="event-badge"></div>
+                  <div class="event-header">
+                    <h3 class="event-name">PHOTOGRAPHY</h3>
+                    <span class="event-time-label">03:00 - 04:30</span>
+                  </div>
+                  <p class="event-description">
+                    Photography contest showcasing creative and technical
+                    photography skills.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation -->
+          <div class="event-row">
+            <div class="event-time-box validation">
+              <div class="time-box">04:30 - 05:30</div>
+              <div class="time-marker"></div>
+            </div>
+            <div class="event-cards">
+              <div class="event-card validation" data-time="04:30 - 05:30">
+                <div class="event-badge"></div>
+                <div class="event-header">
+                  <h3 class="event-name">VALIDATION</h3>
+                  <span class="event-time-label">04:30 - 05:30</span>
+                </div>
+                <p class="event-description">
+                  Closing session for Day 1 with feedback collection and
+                  validation of participation certificates.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center">
+        <a href="#" class="back-button">Back to Home</a>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© Lunara'25 | Department Event</p>
+      </div>
+    </footer>
+
+    <script>
+      // Create stars in the background
+      function createStars() {
+        const stars = document.getElementById("stars");
+        const count = 150;
+
+        for (let i = 0; i < count; i++) {
+          const star = document.createElement("div");
+          star.classList.add("star");
+
+          // Random position
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+
+          // Random size
+          const size = Math.random() * 2;
+
+          // Random animation delay
+          const delay = Math.random() * 5;
+
+          star.style.left = `${x}%`;
+          star.style.top = `${y}%`;
+          star.style.width = `${size}px`;
+          star.style.height = `${size}px`;
+          star.style.animationDelay = `${delay}s`;
+
+          stars.appendChild(star);
+        }
+      }
+
+      // Animate event rows on scroll
+      function animateOnScroll() {
+        const rows = document.querySelectorAll(".event-row");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        rows.forEach((row, index) => {
+          // Add staggered delay to each row
+          setTimeout(() => {
+            observer.observe(row);
+          }, index * 100);
+        });
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        createStars();
+        setTimeout(animateOnScroll, 500);
+      });
+    </script>
+  </body>
+</html>
