@@ -130,31 +130,42 @@
 
                         <!-- Hero content -->
                         <div class="cbl28 czcad ckxd8 c4qns czwux cohxx">
-
                             <div data-aos="zoom-out" class="aos-init aos-animate">
-                                <div
-                                    class="c8a4e ciljg cmgtq czrr8 c4a1n coaq6 cld06 cimbm clnec cm1n3 cv4y4 cjzl6 cfgdq cfqr8 ctz45 cyb34 c6760 cs42d ca9no">
+                                <div class="c8a4e ciljg cmgtq czrr8 c4a1n coaq6 cld06 cimbm clnec cm1n3 cv4y4 cjzl6 cfgdq cfqr8 ctz45 cyb34 c6760 cs42d ca9no">
                                     <div class="ckdyj">Computer Science & Engineering Presents</div>
                                 </div>
                             </div>
+                            
                             <h1 class="cx0om ciljg cejd3 aos-init aos-animate" data-aos="zoom-out" data-aos-delay="100">
-                                The Lunara'25 <em class="font-italic">National Level Symposium</em></h1>
-                            <p class="cyl8w cbqc4 ckdyj aos-init aos-animate" data-aos="zoom-out" data-aos-delay="200">
-                                Mark your calendars for April 5th, 2025 - an event you don't want to miss!</p>
+                                The Lunara'25 <em class="font-italic">National Level Symposium</em>
+                            </h1>
+                            
+                            <!-- Reduced gap by adding style="margin-bottom: 0.5rem;" -->
+                            <p class="cyl8w cbqc4 ckdyj aos-init aos-animate" data-aos="zoom-out" data-aos-delay="200" style="margin-bottom: 0.5rem;">
+                                Mark your calendars for April 5th, 2025 - an event you don't want to miss!
+                            </p>
+                            
+                            <!-- Highlighted with a light border, high contrast text and glow effect to stand out against dark blue -->
+                            <p class="cyl8w cbqc ckdyj aos-init aos-animate" data-aos="zoom-out" data-aos-delay="250" 
+                               style=" padding: 0.5rem; border-radius: 4px; 
+                                      display: inline-block; color: #ffea00; text-shadow: 0 0 8px #ffea00; 
+                                      font-weight: bold; ">
+                                🎟 <strong>Registration Extended!</strong> Secure your spot before <strong>April 4th, 2025</strong>.
+                            </p>
+                            
                             <div class="cbl28 cn9oi cu0vn cdjip c4t8e c9mpo cvuia cqmlm cjwgj aos-init aos-animate"
                                 data-aos="zoom-out" data-aos-delay="300">
                                 <div>
                                     <a class="cxykh c0ayg c4wey cl6ef cf4pm cqbpd cxmkl c4aul c76qn" href="./events.html#all-events">
-                                        Register Now <span
-                                            class="cfe40 cr1tk c56im cv73b c6m7s ckwz7 ccx8x">-&gt;</span>
+                                        Register Now <span class="cfe40 cr1tk c56im cv73b c6m7s ckwz7 ccx8x">-&gt;</span>
                                     </a>
                                 </div>
                                 <div>
                                     <a class="cxykh c0ayg c4wey ckoll c2xk9 clnec cxmkl crzek" href="./index.html#about">Explore</a>
                                 </div>
                             </div>
-
                         </div>
+                        
 
                     </div>
                 </div>
@@ -186,31 +197,18 @@
                         minute = second * 60,
                         hour = minute * 60,
                         day = hour * 24;
-                
-                    let today = new Date(),
-                        dd = String(today.getDate()).padStart(2, "0"),
-                        mm = String(today.getMonth() + 1).padStart(2, "0"),
-                        yyyy = today.getFullYear(),
-                        nextYear = yyyy + 1,
-                        dayMonth = "04/05/", // Set your event date (MM/DD format)
-                        event_date = dayMonth + yyyy;
-                
-                    today = mm + "/" + dd + "/" + yyyy;
-                    if (today > event_date) {
-                        event_date = dayMonth + nextYear;
-                    }
-                
-                    const countDown = new Date(event_date).getTime();
-                
+            
+                    let event_date = new Date("April 4, 2025 23:59:59").getTime();
+            
                     const x = setInterval(function () {
                         const now = new Date().getTime(),
-                            distance = countDown - now;
-                
+                            distance = event_date - now;
+            
                         document.getElementById("days").innerText = Math.floor(distance / day);
                         document.getElementById("hours").innerText = Math.floor((distance % day) / hour);
                         document.getElementById("minutes").innerText = Math.floor((distance % hour) / minute);
                         document.getElementById("seconds").innerText = Math.floor((distance % minute) / second);
-                
+            
                         if (distance < 0) {
                             document.getElementById("headline").innerText = "Hurray! Event Has Started!";
                             document.getElementById("countdown").style.display = "none";
@@ -219,7 +217,8 @@
                         }
                     }, 1000); // Update every second
                 });
-                </script>
+            </script>
+            
 
 
             <!-- About START @Arjunraja-->
@@ -654,7 +653,7 @@
                                                 <div style="position: absolute; width: 76px; height: 12px; border-radius: 50%; border: 2px solid rgba(255, 206, 184, 0.5); transform: rotate(-15deg); top: 22px; z-index: -2; animation: ringRotate 15s linear infinite reverse;"></div>
                                                 
                                                 <!-- Day with enhanced text effect -->
-                                                <span style="font-size: 26px; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 0.9); font-family: 'Arial', sans-serif; animation: textPulse 2.5s infinite alternate; background: linear-gradient(to bottom, #ffffff, #fff2ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">3</span>
+                                                <span style="font-size: 26px; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 0.9); font-family: 'Arial', sans-serif; animation: textPulse 2.5s infinite alternate; background: linear-gradient(to bottom, #ffffff, #fff2ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">4</span>
                                                 
                                                 <!-- Month with enhanced styling -->
                                                 <span style="font-size: 13px; font-weight: 600; letter-spacing: 2px; text-shadow: 0 0 5px rgba(255, 255, 255, 0.9); border-top: 1px solid rgba(255, 255, 255, 0.5); padding-top: 1px; animation: textFloat 3s ease-in-out infinite;">APR</span>
